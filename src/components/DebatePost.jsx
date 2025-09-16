@@ -27,46 +27,48 @@ bir form yapmaktır.
 
   const [comments, setComments] = useState(postData.comments)
   const [comment, setComment] = useState({
-    userName: null,
-    isAnonymous: null,
-    commentText: null
+    userName: " ",
+    isAnonymous: false,
+    commentText: " "
   })
 
   const handleClick = (e) => {
     e.preventDefault()
-    setComments((p) => [...p, comment])
     if (comment.userName && comment.commentText) {
-      setComment({
-        userName: null,
-        isAnonymous: null,
-        commentText: null
-      })
+      setComments((p) => [...p, comment])
     }
     console.log(comment)
+    setComment({
+      userName: " ",
+      isAnonymous: false,
+      commentText: " "
+    })
   }
 
   return (
     <div className='post-container'>
       <PostContent data={{ ...postData }} />
       <PostComments data={comments} />
-      <form>
+      <form onSubmit={handleClick}>
         <input
           className='text-input'
           type='text'
           placeholder='Kullanıcı adı girin.'
           value={comment.userName}
           onChange={(e) => setComment((p) => ({ ...p, userName: e.target.value }))}
+          required
         />
         <textarea placeholder='Ne düşünüyorsunuz?'
           value={comment.commentText}
-          onChange={(e) => setComment((p) => ({ ...p, commentText: e.target.value }))} />
+          onChange={(e) => setComment((p) => ({ ...p, commentText: e.target.value }))}
+          required />
         <label>
           <input className='checkbox' type='checkbox'
-            value={comment.isAnonymous}
+            checked={comment.isAnonymous}
             onChange={(e) => setComment((p) => ({ ...p, isAnonymous: e.target.value }))} />
           İsimsiz mi göndereyim?
         </label>
-        <button type="submit" onClick={handleClick}>Gönder</button>
+        <button type="submit">Gönder</button>
       </form>
     </div>
   )
