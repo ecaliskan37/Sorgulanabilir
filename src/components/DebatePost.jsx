@@ -27,22 +27,25 @@ bir form yapmaktır.
 
   const [comments, setComments] = useState(postData.comments)
   const [comment, setComment] = useState({
-    userName: " ",
+    userName: "",
     isAnonymous: false,
-    commentText: " "
+    commentText: ""
   })
 
   const handleClick = (e) => {
     e.preventDefault()
-    if (comment.userName && comment.commentText) {
+    if ((comment.userName || comment.isAnonymous) && comment.commentText) {
       setComments((p) => [...p, comment])
+      setComment({
+        userName: "",
+        isAnonymous: false,
+        commentText: ""
+      })
+    }
+    else {
+      alert("Hatalı")
     }
     console.log(comment)
-    setComment({
-      userName: " ",
-      isAnonymous: false,
-      commentText: " "
-    })
   }
 
   return (
@@ -56,7 +59,6 @@ bir form yapmaktır.
           placeholder='Kullanıcı adı girin.'
           value={comment.userName}
           onChange={(e) => setComment((p) => ({ ...p, userName: e.target.value }))}
-          required
         />
         <textarea placeholder='Ne düşünüyorsunuz?'
           value={comment.commentText}
@@ -64,8 +66,9 @@ bir form yapmaktır.
           required />
         <label>
           <input className='checkbox' type='checkbox'
+            defaultValue={false}
             checked={comment.isAnonymous}
-            onChange={(e) => setComment((p) => ({ ...p, isAnonymous: e.target.value }))} />
+            onChange={(e) => setComment((p) => ({ ...p, isAnonymous: !p.isAnonymous }))} />
           İsimsiz mi göndereyim?
         </label>
         <button type="submit">Gönder</button>
